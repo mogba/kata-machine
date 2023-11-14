@@ -83,20 +83,13 @@ export default class SinglyLinkedList<T> {
             return undefined;
         }
 
-        let current: Node<T> | undefined;
-        let index = 0;
+        let current: Node<T> | undefined = this.head;
 
-        do {
-            current = current?.next || this.head;
+        for (let i = 0; i < idx && current; i++) {
+            current = current.next;
+        }
 
-            if (idx === index) {
-                return current.value;
-            }
-
-            index++;
-        } while (current.next);
-
-        return undefined;
+        return current?.value;
     }
 
     private removeItemAndUpdatePrevious(current: Node<T>, previous?: Node<T>) {
