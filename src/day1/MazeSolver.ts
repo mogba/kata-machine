@@ -10,7 +10,7 @@ function walk(
   wall: string,
   curr: Point,
   end: Point,
-  visited: boolean[][],
+  visited: Map<string, boolean>,
   path: Point[],
 ) {
   // 1. Pre-recurse
@@ -30,11 +30,11 @@ function walk(
   }
 
   // Check visited positions
-  if (visited[curr.y][curr.x]) {
+  if (visited.get(`${curr.x},${curr.y}`)) {
     return false;
   }
 
-  visited[curr.y][curr.x] = true;
+  visited.set(`${curr.x},${curr.y}`, true);
   path.push(curr);
 
   // Check end
@@ -64,15 +64,9 @@ export default function solve(
   start: Point,
   end: Point,
 ): Point[] {
-  const visited: boolean[][] = [];
   const path: Point[] = [];
 
-  for (let i = 0; i < maze.length; i++) {
-    // maze[0].length is used because all maze lines have the same length
-    visited.push(new Array(maze[0].length).fill(false));
-  }
-
-  walk(maze, wall, start, end, visited, path);
+  walk(maze, wall, start, end, new Map(), path);
 
   return path;
 }
