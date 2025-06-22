@@ -1,50 +1,50 @@
 type Node<T> = {
-    value: T;
-    prev?: Node<T>;
+  value: T;
+  prev?: Node<T>;
 };
 
 export default class Stack<T> {
-    public length: number;
+  public length: number;
 
-    private head?: Node<T>;
+  private head?: Node<T>;
 
-    constructor() {
-        this.length = 0;
-        this.head = undefined;
+  constructor() {
+    this.length = 0;
+    this.head = undefined;
+  }
+
+  push(item: T): void {
+    this.length++;
+
+    const node = { value: item } as Node<T>;
+
+    if (!this.head) {
+      this.head = node;
+      return;
     }
 
-    push(item: T): void {
-        this.length++;
+    node.prev = this.head;
+    this.head = node;
+  }
 
-        const node = { value: item } as Node<T>;
+  pop(): T | undefined {
+    // Cannot subtract be lower than 0
+    this.length = Math.max(0, this.length - 1);
 
-        if (!this.head) {
-            this.head = node;
-            return;
-        }
+    if (this.length === 0) {
+      const head = this.head;
+      this.head = undefined;
 
-        node.prev = this.head;
-        this.head = node;
+      return head?.value;
     }
 
-    pop(): T | undefined {
-        // Cannot subtract be lower than 0
-        this.length = Math.max(0, this.length - 1);
+    const head = this.head as Node<T>;
+    this.head = this.head?.prev;
 
-        if (this.length === 0) {
-            const head = this.head;
-            this.head = undefined;
+    return head.value;
+  }
 
-            return head?.value;
-        }
-
-        const head = this.head as Node<T>;
-        this.head = this.head?.prev;
-
-        return head.value;
-    }
-
-    peek(): T | undefined {
-        return this.head?.value;
-    }
+  peek(): T | undefined {
+    return this.head?.value;
+  }
 }
